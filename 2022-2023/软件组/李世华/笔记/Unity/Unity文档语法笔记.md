@@ -2,6 +2,8 @@
 
 *前言：此笔记本不是给正常人看的，只是为了锻炼我自己的英语看的*
 
+---
+
 ## Vector3
 
 > [Unity - Scripting API: Vector3](https://docs.unity.cn/2021.3/Documentation/ScriptReference/Vector3.html)
@@ -54,11 +56,25 @@ This **structure** is used throughout Unity to pass 3D **positions** and **direc
 | [SlerpUnclamped](https://docs.unity.cn/2021.3/Documentation/ScriptReference/Vector3.SlerpUnclamped.html) | Spherically interpolates between two vectors.（不限制球形插值的参数t的范围，即可以超过1或者小于0） | 不限制 `t` 的范围可以让你在使用 `Vector3.SlerpUnclamped` 方法时获得更大的灵活性，但也需要注意结果可能超出预期的范围。                                           public static [Vector3](https://docs.unity.cn/2021.3/Documentation/ScriptReference/Vector3.html) **SlerpUnclamped**([Vector3](https://docs.unity.cn/2021.3/Documentation/ScriptReference/Vector3.html) **a**, [Vector3](https://docs.unity.cn/2021.3/Documentation/ScriptReference/Vector3.html) **b**, float **t**); |
 | [SmoothDamp](https://docs.unity.cn/2021.3/Documentation/ScriptReference/Vector3.SmoothDamp.html) | Gradually changes a vector towards a desired goal over time.（这是对position进行操作的） | 1. 它可以将当前位置 `current` 平滑地移动到目标位置 `target`。它通过类似于弹簧阻尼器的函数来平滑向量，永远不会超调。最常见的用途是平滑跟随摄像机。                                2. `currentVelocity` 参数是当前速度的引用。这个值在每次调用函数时都会被修改。                                                       3. `smoothTime` 参数指定了到达目标所需的大致时间。值越小，到达目标的速度就越快。可以选择使用 `maxSpeed` 参数来限制最大速度。（ `maxSpeed`默认正无穷）                                                                    4. `deltaTime` 参数指定了自上次调用此函数以来经过的时间，默认为 `Time.deltaTime` 变量。                                                       public static [Vector3](https://docs.unity.cn/2021.3/Documentation/ScriptReference/Vector3.html) **SmoothDamp**([Vector3](https://docs.unity.cn/2021.3/Documentation/ScriptReference/Vector3.html) **current**, [Vector3](https://docs.unity.cn/2021.3/Documentation/ScriptReference/Vector3.html) **target**, ref [Vector3](https://docs.unity.cn/2021.3/Documentation/ScriptReference/Vector3.html) **currentVelocity**, float **smoothTime**, float **maxSpeed** = Mathf.Infinity, float **deltaTime** = Time.deltaTime); |
 
+---
+
+## Time
+
+> [Unity - Scripting API: Time](https://docs.unity.cn/2021.3/Documentation/ScriptReference/Time.html)
+
+Provides an interface to get time information from Unity.
+
+Unity有两个追踪时间的系统，一个是每一步之间的时间不固定，另一个是每一步之间的时间固定。
+
+可变时间步长的系统是在屏幕上重复绘制一帧，每帧运行一次你的应用程序或游戏代码。
+
+固定时间步长系统每一步都以预先定义的数量向前迈进，并且与视觉帧的更新没有联系。它更多地与物理系统联系在一起，物理系统以固定时间步长指定的速率运行，但如果有必要，你也可以在每个固定时间步长执行自己的代码。
+
+
+
 
 
 ---
-
-
 
 
 
@@ -296,3 +312,18 @@ Do not set the velocity of an object every physics step, this will lead to unrea
         }
     ```
 
+
+
+
+
+----
+
+## Order of execution for event functions
+
+> [Unity - Manual: Order of execution for event functions](https://docs.unity.cn/2021.3/Documentation/Manual/ExecutionOrder.html)
+
+在Unity脚本中，有许多事件函数会按照预定的顺序执行。这个顺序被称为“事件函数的执行顺序”（Order of execution for event functions）
+
+下图概括了 Unity 如何在脚本的生命周期内对事件函数进行排序以及重复执行这些事件函数。
+
+![img](https://docs.unity.cn/cn/current/uploads/Main/monobehaviour_flowchart.svg)
