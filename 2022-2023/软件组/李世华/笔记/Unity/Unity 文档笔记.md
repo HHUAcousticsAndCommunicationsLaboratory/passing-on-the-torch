@@ -123,7 +123,10 @@ Unity中的时间缩放属性（Time Scale），它可以控制游戏时间相�
 > The [Time](https://docs.unity.cn/cn/current/Manual/class-TimeManager.html) window has a property to let you set the time scale globally **but it’s usually more useful to set the value from a script using the [ScriptRef:Time-timeScale](https://docs.unity.cn/cn/current/ScriptReference/Time-timeScale.html) property**.
 
 - 对于Update来说，它是每帧调用一次，**修改Time.deltaTime的值不会影响Update函数的调用**。Update函数仍然会在每一帧被调用，但是由于Time.deltaTime的值改变了，所以基于时间的计算也会受到影响。
-- 但是**修改Time.fixedDeltaTime会影响FixedUpdate函数的调用**，ixedUpdate函数以固定的时间间隔被调用，这个间隔由Time.fixedDeltaTime确定。如果您更改了Time.fixedDeltaTime的值，则FixedUpdate函数调用之间的时间间隔也会相应更改。
+- 但是**修改Time.fixedDeltaTime会影响FixedUpdate函数的调用**，FixedUpdate函数以固定的时间间隔被调用，这个间隔由Time.fixedDeltaTime确定。如果您更改了Time.fixedDeltaTime的值，则FixedUpdate函数调用之间的时间间隔也会相应更改。(注意：修改Time.scaleTime会影响FixedUpdate的调用，但不会影响Time.fixedDeltaTime的值)
+- - Update函数不受此影响，但是Time.deltaTime会受到此影响（成正比）                                                                   
+  - FixedUpdate的调用会受到它的影响，即调用频率成正比；但fixedDeltaTime不会因此受到影响
+  - 根本原因在于，Time.scaleTime影响了Time.time，而FixedUpdate是根据Time.time的流逝进行调用的
 
 ### Unity中的捕获帧率（Capture Framerate）
 
