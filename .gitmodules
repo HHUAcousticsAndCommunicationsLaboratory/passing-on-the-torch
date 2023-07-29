@@ -4,3 +4,6 @@
 [submodule "2022-2023/软件组/封冠名/Notes"]
 	path = 2022-2023/软件组/封冠名/Notes
 	url = https://github.com/MorkCarpenter/Notes.git
+[submodule "2022-2023/软件组/李世华/笔记/CsharpDesignPattern"]
+	path = 2022-2023/软件组/李世华/笔记/CsharpDesignPattern
+	url = https://github.com/1erohua/CsharpDesignPattern.git
