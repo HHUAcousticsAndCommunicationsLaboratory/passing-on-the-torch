@@ -1,6 +1,6 @@
 ## 1.2 同步电路设计
 
-### 1.2.1触发器
+### 1.2.1 触发器
 
 #### 1. 关于时钟信号的解释
 
@@ -105,4 +105,121 @@ DFF原理结构
 
 这段话的意思是说，当我输入高电平的时候，如果信号的输入在传输门关闭之前发生了改变（传输门的关闭有延迟），那么将会把*本该下一次传入的信号*在这次一并输入，就会产生亚稳态，所以需要保持时间约束，让信号的输入D维持一段时间
 
+> 在上沿信号到来的前一刻，如果输入不同的信号，就会产生干扰，就会导致信号不稳定，因为信号要回复正常需要一定时间
+>
+> 至于保持时间，是考虑到，时钟信号的时钟信号到达之后和传输门关闭之间的时间差。如果在这个时间差之内改变信号，就会导致不稳定的信号在传输门关闭之前混入输出端
+
+
+
 ### 1.2.3 时序分析
+
+<img src="C:\Users\32620\AppData\Roaming\Typora\typora-user-images\image-20230921202903508.png" alt="image-20230921202903508" style="zoom:50%;" />
+
+<img src="C:\Users\32620\AppData\Roaming\Typora\typora-user-images\image-20230921202937165.png" alt="image-20230921202937165" style="zoom:50%;" />
+
+<img src="C:\Users\32620\AppData\Roaming\Typora\typora-user-images\image-20230921203035590.png" alt="image-20230921203035590" style="zoom:50%;" />
+
+接下来是解释
+
+#### 1.同步逻辑设计
+
+> [同步逻辑设计是指整个设计中只有一个全局时钟](https://bing.com/search?q=同步逻辑设计的定义)[[1]](https://bing.com/search?q=同步逻辑设计的定义)[。在同步逻辑设计中，所有的记忆元素（例如寄存器、RAM甚至锁存器等）都在被同一个时钟信号驱动，那么它们的输出都会同时变化，所以它们对数字电路的影响是同步的](https://zhuanlan.zhihu.com/p/265774015)[[2]](https://zhuanlan.zhihu.com/p/265774015)[。这是因为所有记忆元素都在被同一个时钟信号驱动，那么它们的输出都会同时变化，所以它们对数字电路的影响是同步的](https://zhuanlan.zhihu.com/p/265774015)[[3]](https://zhuanlan.zhihu.com/p/265774015)[。只有时钟脉冲同时到达各记忆元件的时钟端，才能发生预期改变](https://bing.com/search?q=同步逻辑设计的定义)[[4]](https://bing.com/search?q=同步逻辑设计的定义)[。同步逻辑是时钟之间有固定的因果关系](https://bing.com/search?q=同步逻辑设计的定义)[[5]](https://bing.com/search?q=同步逻辑设计的定义)[[6]](https://zhuanlan.zhihu.com/p/265774015)[。这种设计方法有利于静态时序分析](https://blog.csdn.net/qq_57148694/article/details/129788018)[3](https://blog.csdn.net/qq_57148694/article/details/129788018)[，但存在时钟偏斜问题](https://blog.csdn.net/qq_57148694/article/details/129788018)[[7]](https://blog.csdn.net/qq_57148694/article/details/129788018)。
+
+#### 2.时钟偏斜
+
+> [时钟偏斜（Clock Skew）是指同样的时钟产生的多个子时钟信号之间的延时差异](https://zhuanlan.zhihu.com/p/449845451)[1](https://zhuanlan.zhihu.com/p/449845451)[2](https://zh.wikipedia.org/wiki/时钟偏移)[3](https://www.cnblogs.com/zeushuang/archive/2012/07/04/2575849.html)[4](https://blog.csdn.net/u012158332/article/details/102831687)[。它表现的形式是多种多样的，既包含了时钟驱动器的多个输出之间的偏移，也包含了由于PCB走线误差造成的接收端和驱动端时钟信号之间的偏移](https://www.cnblogs.com/zeushuang/archive/2012/07/04/2575849.html)[3](https://www.cnblogs.com/zeushuang/archive/2012/07/04/2575849.html)[4](https://blog.csdn.net/u012158332/article/details/102831687)[。时钟偏斜指的是同一个时钟信号到达两个不同寄存器之间的时间差值，时钟偏斜永远存在，到一定程度就会严重影响电路的时序](https://www.cnblogs.com/zeushuang/archive/2012/07/04/2575849.html)[3](https://www.cnblogs.com/zeushuang/archive/2012/07/04/2575849.html)[4](https://blog.csdn.net/u012158332/article/details/102831687)。
+>
+> 时钟偏斜（Clock Skew）是指由于芯片中**时钟信号的传播延迟**和**分布不均**，导致不同部分（如逻辑门）之间的**时钟速度**存在差异。当这种延迟和速度差异足够大时，可能会导致数据传输错误或信号同步问题，从而影响电路的正确性和稳定性。
+>
+> 时钟偏斜分为两种类型：正时钟偏斜（Positive Clock Skew）和负时钟偏斜（Negative Clock Skew）。**当一部分电路的时钟信号比另一部分电路的时钟信号快时，称为正时钟偏斜**；**反之，当一部分电路的时钟信号比另一部分电路的时钟信号慢时，称为负时钟偏斜**。 时钟偏斜会影响**数字电路的性能和稳定性**，因此需要进行控制和管理。常用的方法包括使用**缓冲器（Buffer）**或**驱动器（Driver）**来调整时钟信号的幅度和相位，以及使用差分信号（Differential Signaling）或共模信号（Common Mode Signaling）来传输时钟信号等。/
+
+然而，对FPGA来说，它受到的时钟偏斜较小
+
+原因如下
+
+> [FPGA（现场可编程门阵列）受时钟偏斜影响较小的原因主要是其内部设计和布线策略。在FPGA中，时钟信号通常通过专用的全局时钟网络进行分配，这种网络设计可以最大限度地减少时钟偏斜](https://blog.csdn.net/Reborn_Lee/article/details/84930353)[1](https://blog.csdn.net/Reborn_Lee/article/details/84930353)。
+>
+> [具体来说，由于时钟网络布线存在传输延迟，因此时钟偏斜是同一个时钟网络上的同一个时钟沿同时作用于源寄存器和目的寄存器时的相位差](https://blog.csdn.net/Reborn_Lee/article/details/84930353)[1](https://blog.csdn.net/Reborn_Lee/article/details/84930353)[。在FPGA中，由于布线资源的延迟是不可预测的，所以时钟网络布线应该使用FPGA提供的专用时钟资源](https://blog.csdn.net/Reborn_Lee/article/details/84930353)[1](https://blog.csdn.net/Reborn_Lee/article/details/84930353)。
+>
+> [此外，FPGA还采用了一种称为“时钟树”的技术来进一步降低时钟偏斜。简单地说，就是让时钟上“树”，时钟树可以使时钟到达各个寄存器的时钟偏斜最小](https://blog.csdn.net/Reborn_Lee/article/details/84930353)[1](https://blog.csdn.net/Reborn_Lee/article/details/84930353)[。这种设计使得与时钟信号相连的功能子模块的互连线大致等长，从而保障了到达各个寄存器的信号是相同的且不存在大的时钟偏斜](https://blog.csdn.net/Reborn_Lee/article/details/84930353)[1](https://blog.csdn.net/Reborn_Lee/article/details/84930353)。
+>
+> 因此，通过使用专用的全局时钟网络和采用“时钟树”技术，FPGA能够有效地控制和管理时钟偏斜，从而减少其对电路性能和稳定性的影响。
+>
+> FPGA的**时钟网络是由其内部时钟源通过缓冲器和分布器**产生的，其时钟偏斜主要受以下因素影响： 
+>
+> **缓冲器和分布器的性能**：FPGA内部通常包含许多缓冲器和分布器，它们会影响时钟信号的质量和分布。如果缓冲器和分布器的性能不理想，会导致时钟信号的幅度和相位不均匀，从而产生时钟偏斜。 
+>
+> **电路板的布局和布线**：当FPGA应用于电路板时，电路板的布局和布线会对时钟信号的传播产生影响。如果电路板的布局和布线不合理，会导致时钟信号的传播延迟和分布不均，从而产生时钟偏斜。 
+>
+> **时钟源的性能**：FPGA的时钟源通常是由石英晶体振荡器或PLL（相位锁定环）产生的。如果时钟源的性能不稳定或存在偏差，会导致时钟信号的质量和稳定性下降，从而产生时钟偏斜。 
+>
+> 由于FPGA的设计和制造过程中会采取多种措施来控制时钟偏斜，包括**优化缓冲器和分布器的设计、优化电路板的布局和布线、选择高性能的时钟源**等，因此FPGA通常具有相对较小的时钟偏斜。此外，FPGA还支持多种差分信号和共模信号的传输方式，可以进一步提高时钟信号的质量和稳定性。
+
+#### 3.STA与DTA
+
+STA（静态时序分析）和DTA（动态时序分析）都是电路设计中的重要概念，它们用于分析和验证电路的时序性能。下面我将详细解释这两个概念，并比较它们的区别。
+
+[**STA（静态时序分析）**](https://bing.com/search?q=电路中的STA解释)[1](https://bing.com/search?q=电路中的STA解释)[2](https://blog.csdn.net/weixin_43701504/article/details/120922204)：
+
+- [STA是一种在设计芯片的过程中使用的技术，主要用于预测和验证芯片在特定环境下的工作表现](https://bing.com/search?q=电路中的STA解释)[3](https://blog.csdn.net/cy413026/article/details/123667602)。
+- [STA通过时序库文件给出的各条时序路径的延迟，来确认在每个触发器（Flip-Flop，简称FF）上是否满足建立/保持时间](https://blog.csdn.net/weixin_43701504/article/details/120922204)[1](https://bing.com/search?q=电路中的STA解释)[2](https://blog.csdn.net/weixin_43701504/article/details/120922204)。
+- [STA是把设计划分为一系列时序路径，然后分析各条时序路径的建立、保持时间是否满足](https://blog.csdn.net/cy413026/article/details/123667602)[3](https://blog.csdn.net/cy413026/article/details/123667602)。
+- [STA的优点是运算速度快，缺点是不能进行功能验证，并且会报出一些false的错误](https://blog.csdn.net/cy413026/article/details/123667602)[3](https://blog.csdn.net/cy413026/article/details/123667602)。
+
+[**DTA（动态时序分析）**](https://bing.com/search?q=电路中的STA解释)[1](https://bing.com/search?q=电路中的STA解释)[2](https://blog.csdn.net/weixin_43701504/article/details/120922204)：
+
+- [DTA需要给设计灌入激励在仿真的时候加上各元器件的延迟信息，然后分析设计在这些延迟信息下的正确与否](https://blog.csdn.net/weixin_43701504/article/details/120922204)[1](https://bing.com/search?q=电路中的STA解释)[2](https://blog.csdn.net/weixin_43701504/article/details/120922204)。
+- [DTA可以进行功能验证以及时序要求](https://bing.com/search?q=电路中的STA解释)[4](http://www.vlsijunction.com/2015/10/sta-vs-dta.html)。
+- [DTA需要一组全面的输入向量来检查设计中路径的时序特性](https://bing.com/search?q=电路中的STA解释)[4](http://www.vlsijunction.com/2015/10/sta-vs-dta.html)。
+
+**STA与DTA的区别**：
+
+- **[STA和DTA的主要区别在于分析电路时序时是否有输入激励](https://bing.com/search?q=电路中的STA解释)[1](https://bing.com/search?q=电路中的STA解释)[2](https://blog.csdn.net/weixin_43701504/article/details/120922204)。**
+- **[STA只需要考虑最坏情况下的输入，而不需要考虑所有可能的输入组合。因此，STA可以更快地完成，通常用于设计过程中的初步时序检查](https://bing.com/search?q=电路中的STA解释)[3](https://blog.csdn.net/cy413026/article/details/123667602)。**
+- [相比之下，DTA需要对所有可能的输入组合进行仿真，这通常需要大量的计算资源和时间](https://bing.com/search?q=电路中的STA解释)[4](http://www.vlsijunction.com/2015/10/sta-vs-dta.html)[。因此，DTA通常在设计完成后进行，以验证设计在所有可能情况下都能正常工作](https://bing.com/search?q=电路中的STA解释)[4](http://www.vlsijunction.com/2015/10/sta-vs-dta.html)。
+
+**为什么STA更适合FPGA？**
+
+[在FPGA中，STA（静态时序分析）和DTA（动态时序分析）都是用来验证数字集成电路时序是否合格的验证方法](https://zhuanlan.zhihu.com/p/345847896)[1](https://zhuanlan.zhihu.com/p/345847896)[2](https://www.synopsys.com/glossary/what-is-static-timing-analysis.html)。
+
+[STA是一种方法，它通过检查所有可能的路径来验证设计的时序性能](https://www.synopsys.com/glossary/what-is-static-timing-analysis.html)[2](https://www.synopsys.com/glossary/what-is-static-timing-analysis.html)[。STA将设计分解为时序路径，计算每条路径上的信号传播延迟，并检查设计内部和输入/输出接口处的时序约束是否存在违规](https://www.synopsys.com/glossary/what-is-static-timing-analysis.html)[2](https://www.synopsys.com/glossary/what-is-static-timing-analysis.html)[。STA的前提是同步逻辑设计，不能分析异步电路](https://zhuanlan.zhihu.com/p/351786400)[3](https://zhuanlan.zhihu.com/p/351786400)[。**STA对所有的时序路径进行错误分析，不需要使用测试向量激活某个路径**](https://zhuanlan.zhihu.com/p/351786400)[3](https://zhuanlan.zhihu.com/p/351786400)[。这使得STA的分析速度比时序仿真工具快几个数量级，克服了动态时序验证的缺陷，适合大规模的电路设计验证](https://zhuanlan.zhihu.com/p/351786400)[3](https://zhuanlan.zhihu.com/p/351786400)[。在同步逻辑情况下，能够达到100%的时序路径覆盖](https://zhuanlan.zhihu.com/p/351786400)[3](https://zhuanlan.zhihu.com/p/351786400)。
+
+[相比之下，DTA则是通过模拟输入刺激向量来确定电路的完整行为。然而，DTA只能检查被一组测试向量敏感化的时序路径，而不能像STA那样检查所有的时序路径](https://www.synopsys.com/glossary/what-is-static-timing-analysis.html)[2](https://www.synopsys.com/glossary/what-is-static-timing-analysis.html)。
+
+[FPGA采用STA主要是因为它可以更快、更全面地进行时序分析。在高速系统中，FPGA的时序约束不仅包括内部时钟约束，还应包括完整的IO时序约束和时序例外约束才能实现PCB板级的时序收敛](https://zhuanlan.zhihu.com/p/345847896)[1](https://zhuanlan.zhihu.com/p/345847896)[4](https://www.cnblogs.com/lifan3a/articles/4385647.html)[。因此，仅有正确的约束才能在快速情况下保证FPGA和外部器件通信正确](https://zhuanlan.zhihu.com/p/345847896)[1](https://zhuanlan.zhihu.com/p/345847896)。
+
+**STA能识别的时序故障**
+
+静态时序分析能够识别的时序故障：**建立时间（Setup）/保持时间（Hold）/恢复时间（Recovery）/移除时间（Removal）**检查；最小跳变和最大跳变；时钟脉冲宽度、时钟畸变（Skew、Jitter）；总线竞争；不受约束的逻辑通道；关键路径；约束冲突等；
+
+**STA的时序路径**
+
+<img src="C:\Users\32620\AppData\Roaming\Typora\typora-user-images\image-20230921231850223.png" alt="image-20230921231850223" style="zoom:33%;" />
+
+<img src="C:\Users\32620\AppData\Roaming\Typora\typora-user-images\image-20230921231903231.png" alt="image-20230921231903231" style="zoom:33%;" />
+
+#### 4.组合逻辑延迟
+
+[在FPGA中，组合逻辑电路的延时主要是指数据从一个触发器（D触发器）的输出端，经过组合逻辑运算后，到达下一个触发器的输入端所需的时间](https://zhuanlan.zhihu.com/p/540137408)[1](https://zhuanlan.zhihu.com/p/540137408)[。这个时间包括了触发器的响应时间（即数据从触发器的输入端传输到输出端所需的时间）和组合逻辑电路的处理时间](https://zhuanlan.zhihu.com/p/418218293)[2](https://zhuanlan.zhihu.com/p/418218293)。
+
+[例如，假设有两个D触发器D1和D2，它们之间有一段组合逻辑电路。当时钟信号的上升沿到来时，D1的输出数据会经过组合逻辑电路处理后输入到D2](https://zhuanlan.zhihu.com/p/540137408)[3](https://bing.com/search?q=FPGA中组合逻辑电路的延时是什么)。这个过程中，数据从D1的输出端到达D2的输入端所需的时间就是组合逻辑电路的延时。
+
+[值得注意的是，FPGA中的延时还包括了走线延时，即数据在物理线路上传输所需的时间](https://zhuanlan.zhihu.com/p/540137408)[4](https://www.zhihu.com/question/36771917)[。在实际应用中，走线延时可能占总延时的60%～70%](https://zhuanlan.zhihu.com/p/540137408)[4](https://www.zhihu.com/question/36771917)。
+
+[总的来说，FPGA中组合逻辑电路的延时是由触发器响应时间、组合逻辑处理时间以及走线延时共同决定的](https://zhuanlan.zhihu.com/p/540137408)[2](https://zhuanlan.zhihu.com/p/418218293)[4](https://www.zhihu.com/question/36771917)[。这个延时对于满足系统性能要求（如建立时间和保持时间）具有重要影响](https://zhuanlan.zhihu.com/p/418218293)[2](https://zhuanlan.zhihu.com/p/418218293)。
+
+> 这里组合逻辑电路所说的处理时间，是实际上就是：
+>
+> [是的，组合逻辑电路的处理时间在某种程度上类似于CMOS电路的处理时效](https://en.wikipedia.org/wiki/CMOS)[1](https://en.wikipedia.org/wiki/CMOS)[2](https://zhuanlan.zhihu.com/p/595514197)[。在CMOS电路中，处理时效通常是指数据在CMOS电路中传输所需的时间](https://en.wikipedia.org/wiki/CMOS)[1](https://en.wikipedia.org/wiki/CMOS)[。这个时间取决于多个因素，包括电路的设计、晶体管的尺寸、供电电压以及负载电容等](https://en.wikipedia.org/wiki/CMOS)[1](https://en.wikipedia.org/wiki/CMOS)。
+>
+> [同样，在组合逻辑电路中，处理时间也是指数据在电路中传输所需的时间](https://zhuanlan.zhihu.com/p/595514197)[2](https://zhuanlan.zhihu.com/p/595514197)[。这个时间同样取决于多个因素，包括电路的设计、使用的逻辑门类型（如AND门、OR门等）、逻辑门的数量以及互连线的长度等](https://zhuanlan.zhihu.com/p/595514197)[2](https://zhuanlan.zhihu.com/p/595514197)。
+>
+> [因此，我们可以说，组合逻辑电路的处理时间和CMOS电路的处理时效都是描述数据在电路中传输所需的时间。但是，具体的计算方法和影响因素可能会有所不同](https://en.wikipedia.org/wiki/CMOS)[1](https://en.wikipedia.org/wiki/CMOS)[2](https://zhuanlan.zhihu.com/p/595514197)。
+
+**至于触发器的响应时间**
+
+[触发器的响应时间，也被称为传输延迟时间（Propagation delay time），是指当时钟有效沿变化后，数据从输入端到输出端的最小时间间隔](https://www.zhihu.com/question/35128735)[1](https://www.zhihu.com/question/35128735)[。这个概念在一些文献中也被称为“从时钟到Q的标准传播延迟。换句话说，它是数据从触发器的输入端传输到输出端所需的时间](https://www.zhihu.com/question/35128735)[2](https://bing.com/search?q=触发器的响应时间是什么)[。这个时间是由触发器的内部结构和工作原理决定的，包括晶体管的开关速度、电路的设计等因素](https://www.zhihu.com/question/35128735)[2](https://bing.com/search?q=触发器的响应时间是什么)[。在实际应用中，触发器的响应时间对于系统性能有重要影响，例如在高速数字系统中，响应时间越短，系统的工作频率就可以越高](https://www.zhihu.com/question/35128735)[2](https://bing.com/search?q=触发器的响应时间是什么)[。因此，在设计数字系统时，选择具有适当响应时间的触发器是非常重要的](https://www.zhihu.com/question/35128735)[2](https://bing.com/search?q=触发器的响应时间是什么)。
+
+#### 5.重新认识建立时间和保持时间概念
+
+[【学习笔记】详解！建立时间和保持时间概念，fpga基础知识。 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/418218293)
