@@ -7,3 +7,6 @@
 [submodule "2022-2023/软件组/李世华/笔记/CsharpDesignPattern"]
 	path = 2022-2023/软件组/李世华/笔记/CsharpDesignPattern
 	url = https://github.com/1erohua/CsharpDesignPattern.git
+[submodule "2022-2023/软件组/李世华/笔记/ZeroHuaMarkdown"]
+	path = 2022-2023/软件组/李世华/笔记/ZeroHuaMarkdown
+	url = https://github.com/1erohua/ZeroHuaMarkdown
