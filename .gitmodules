@@ -1,12 +1,12 @@
 [submodule "2022-2023/软件组/邓佳杰_管理员/markdownNote"]
 	path = 2022-2023/软件组/邓佳杰_管理员/markdownNote
 	url = https://github.com/life-studied/markdowmnote.git
-[submodule "2022-2023/软件组/封冠名/Notes"]
-	path = 2022-2023/软件组/封冠名/Notes
-	url = https://github.com/MorkCarpenter/Notes.git
 [submodule "2022-2023/软件组/李世华/笔记/CsharpDesignPattern"]
 	path = 2022-2023/软件组/李世华/笔记/CsharpDesignPattern
 	url = https://github.com/1erohua/CsharpDesignPattern.git
 [submodule "2022-2023/软件组/李世华/笔记/ZeroHuaMarkdown"]
 	path = 2022-2023/软件组/李世华/笔记/ZeroHuaMarkdown
 	url = https://github.com/1erohua/ZeroHuaMarkdown
+[submodule "2023-2024/软件组/封冠名/Notes"]
+	path = 2023-2024/软件组/封冠名/Notes
+	url = https://github.com/MorkCarpenter/Notes
